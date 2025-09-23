@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat Image Gallery</title>
+  <style>
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  background: linear-gradient(to right, #0b0b0b, #d1a505, #0b0b0b);
+  min-height: 100vh;
+  color: #2e2e2e;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #f9f9f7;
+font-family: 'Courier New', Courier, monospace;
+  font-size: 48px;
+
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.card {
+  background: #c73f3fee;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 260px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: transform 0.4s ease;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
+.reload-btn {
+  display: block;
+  margin: 0 auto 20px;
+  padding: 12px 28px;
+  color: #0ba29d;
+  background: #ffffff;
+  border: 2px solid #0ba29d;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.reload-btn:hover {
+  background-color: #087f74; 
+  color: #e0f2f1;            
+  box-shadow: 0 6px 20px rgba(77, 79, 79, 0.6);
+}
+
+
+  </style>
+</head>
+
+<body>
+  <h1>Cat Image Gallery</h1>
+  <button class="reload-btn">Load More Cats 😺</button>
+  <div class="gallery" id="catGallery"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const gallery = document.getElementById("catGallery");
+    const loadButton = document.querySelector(".reload-btn");
+
+    function loadCats() {
+      axios.get('https://api.thecatapi.com/v1/images/search?limit=10')
+        .then(response => {
+          response.data.forEach(cat => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+
+            const img = document.createElement('img');
+            img.src = cat.url;
+            img.alt = 'Cute Cat';
+
+            card.appendChild(img);
+            gallery.appendChild(card);
+          });
+        })
+        .catch(error => console.error('Error loading cat images:', error));
+    }
+
+    loadCats();
+
+    loadButton.addEventListener('click', loadCats);
+  </script>
+</body>
+
+</html>
